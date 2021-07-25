@@ -1,0 +1,50 @@
+type student struct {
+	name  string
+	score int
+}
+
+func passed(a []student) []string {
+	return [x.name for x <- a, x.score >= 60]
+}
+
+func sum(a []student) int {
+	s := 0
+	for x <- a {
+		s += x.score
+	}
+	return s
+}
+
+func avg(a []student) float64 {
+	return float64(sum(a)) / float64(len(a))
+}
+
+func aboveavg(a []student) []string {
+	y := avg(a)
+	return [x.name for x <- a, float64(x.score) >= y]
+}
+
+func findMax(a []student, n int) int {
+	s := n
+	for i := n + 1; i < len(a); i++ {
+		if a[s].score < a[i].score {
+			s = i
+		}
+	}
+	return s
+}
+
+func sort(a []student) {
+	for i := 0; i < len(a); i++ {
+		s := findMax(a, i)
+		a[s], a[i] = a[i], a[s]
+	}
+}
+
+a := [student{"k", 90}, student{"d", 39}, student{"s", 102}]
+
+println(passed(a))
+println(avg(a))
+println(aboveavg(a))
+sort(a)
+println(a)
